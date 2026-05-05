@@ -83,6 +83,6 @@ Note:
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-Copyright 2025 Emmett Thompson, University College London
+Copyright 2026 Thompson _et al_., University College London
 
 
