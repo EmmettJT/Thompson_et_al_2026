@@ -21,16 +21,14 @@ Ensure you have the following software installed:
 - [Python](https://www.python.org/downloads/)  (Version used: 3.10.18)
 - Necessary Python libraries: see environment YAML 
 
-### Installation
+## Installation
 
 1. **Clone this repository:**
 
    ```bash
-   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/StephensonJonesLab/Thompson_et_al_2026.git)
-
-
-
-# Setup
+   git clone https://github.com/StephensonJonesLab/Thompson_et_al_2026.git
+   ```  
+2. **Dependencies:**
 
 This project provides two ways to install dependencies:
 
@@ -38,76 +36,29 @@ This project provides two ways to install dependencies:
 - **pip (`requirements.txt`)** — lightweight alternative  
 
 ---
-
-## Option 1: Using Conda (recommended)
-
-If you use Anaconda or Miniconda:
-
-### Create the environment
-conda env create -f environment.yaml
-
-### Activate it
-conda activate myenv
-
-The environment name (`myenv`) is defined inside `environment.yaml`.
-
----
-
-## Option 2: Using pip
-
-If you prefer a standard Python virtual environment:
-
-### Create a virtual environment
-python -m venv venv
-
-### Activate it
-
-macOS / Linux:
-source venv/bin/activate
-
-Windows:
-venv\Scripts\activate
-
-### Install dependencies
-pip install -r requirements.txt
-
----
-
-## Updating dependencies
-
-If you add new packages:
-
-### Conda
-conda env export --no-builds > environment.yaml
-
-### pip
-pip freeze > requirements.txt
-
----
-
-## Notes
-
-- The Conda environment is the most reliable way to reproduce results exactly.  
-- The pip setup may be faster but can be less consistent across systems.  
-- If something breaks, try recreating the environment from scratch.
-
-
-
-
-
-2. **Download the data file:**
-
-Download the data file from [[this link](https://figshare.com/s/35340aa23920ba25c5a8)], unzip the data and move it to the same parent directory as the cloned folder (do not place the data file inside the cloned repo).
-
-3. **Navigate to the cloned repository:**
+#### Option 1: Using Conda
+##### Create the environment
 
    ```bash
-   cd your-repo-name
+   conda env create -f Thompson_et_al_2026.yaml
+   ```  
+#### Activate it
 
-4. **Install the required Python packages or install the provided environment YAML:**
-  
-    ```bash
-    pip install -r requirements.txt
+   ```bash
+   conda activate Thompson_et_al_2026
+   ```  
+#### Option 2: Using pip
+If you prefer a standard Python virtual environment:
+   ```bash
+   pip install -r requirements.txt
+   ```
+---
+
+3. **Download the data files:**
+
+Download the data file from ZENODO LINK, unzip the data and move it into the cloned directory. 
+This file must be called 'data' and must live inside the main repo file
+
 
 ## Usage
 Reproducing the Main Figures
@@ -123,6 +74,6 @@ Note:
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-Copyright 2025 Emmett Thompson, University College London
+Copyright 2026 Thompson _et al_., University College London
 
 
