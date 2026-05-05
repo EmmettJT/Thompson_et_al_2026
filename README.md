@@ -2,9 +2,7 @@
 
 This repository contains the code and data necessary to reproduce the figures from our publication: [Replay of Procedural Experience is Independent of the Hippocampus](https://www.biorxiv.org/content/10.1101/2024.06.05.597547v1.full.pdf).
 
-Note:
-- Plotting data are minimal (to save storage space) but sufficent to reproduce figures from the text. 
-- Example data and preprocessing scripts are provided to outline data analysis pipelines prior to plotting. 
+
 ---------------------------------------------------------------------------------------------------------
 ![Replay Example](images/replay_exmaple.png)
 ## Overview
@@ -45,10 +43,14 @@ Download the data file from [[this link](https://figshare.com/s/35340aa23920ba25
 
 ## Usage
 Reproducing the Main Figures
-To reproduce the main figures and statistics from the publication, run the tidied notebook scripts in the scripts directory. Each script corresponds to a specific figure in the paper.
+To reproduce the main figures and statistics from the publication, run the tidied notebook scripts in the scripts directory. Each script corresponds to a main figure, extended data figure or supplementary data figure in the paper.
 
 ## Preprocessing
-For those interested in the preprocessing and analysis steps, the 'other' directory contains scripts containing preprocessing. Due to storage space limitations partial example data is shared. The full data set is available on request.
+Due to storage space limitations partial example data is shared. The full data set is available on request.
+
+Note:
+- Plotting data are minimal (to save storage space) but sufficent to reproduce figures from the text. 
+- Example data and preprocessing scripts are provided to outline data analysis pipelines prior to plotting. 
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
