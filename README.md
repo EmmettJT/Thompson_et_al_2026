@@ -26,7 +26,7 @@ Ensure you have the following software installed:
 1. **Clone this repository:**
 
    ```bash
-   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/EmmettJT/procedural_replay_paper_2024.git)
+   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/StephensonJonesLab/Thompson_et_al_2026.git)
 
 
 
