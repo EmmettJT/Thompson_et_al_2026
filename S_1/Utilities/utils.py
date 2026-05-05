@@ -1,13 +1,10 @@
-import pandas as pd
 import numpy as np
-from pathlib import Path
+from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
-from PIL import Image
-import os
-import seaborn as sns
+import pandas as pd
 import h5py
-import ast
-from scipy import stats 
+import os
+from pathlib import Path
 
 def load_h5(filename):
     """
@@ -55,9 +52,34 @@ def load_h5(filename):
                 return data
         else:
             return group
-        
-    with h5py.File(filename, 'r') as f:
-        return {key: load_item(f[key]) for key in f.keys()}
 
     with h5py.File(filename, 'r') as f:
         return {key: load_item(f[key]) for key in f.keys()}
+    
+def convert_loaded_data(data):
+    """
+    Recursively convert HDF5-loaded data to Python-friendly types:
+    - Numeric strings -> floats
+    - 1D arrays -> lists
+    - Leaves strings or DataFrames as-is
+    """
+    if isinstance(data, np.ndarray):
+        if data.dtype.kind in {'U', 'S', 'O'}:
+            # Try to convert each element to float, fallback to string
+            def try_float(x):
+                try:
+                    return float(x)
+                except (ValueError, TypeError):
+                    return x
+            data = np.vectorize(try_float)(data)
+        # Convert 1D arrays to list
+        if data.ndim == 1:
+            return data.tolist()
+        return data
+    elif isinstance(data, pd.DataFrame):
+        # Apply conversion to all DataFrame cells
+        return data.applymap(lambda x: float(x) if isinstance(x, str) and x.replace('.','',1).isdigit() else x)
+    elif isinstance(data, dict):
+        return {k: convert_loaded_data(v) for k, v in data.items()}
+    else:
+        return data
