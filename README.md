@@ -47,13 +47,12 @@ This project provides two ways to install dependencies:
    ```bash
    conda activate Thompson_et_al_2026
    ```  
----
-
 #### Option 2: Using pip
 If you prefer a standard Python virtual environment:
    ```bash
    pip install -r requirements.txt
    ```
+---
 
 2. **Download the data files:**
 
