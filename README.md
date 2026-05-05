@@ -56,17 +56,8 @@ If you prefer a standard Python virtual environment:
 
 2. **Download the data files:**
 
-Download the data file from [[this link](https://figshare.com/s/35340aa23920ba25c5a8)], unzip the data and move it to the same parent directory as the cloned folder (do not place the data file inside the cloned repo).
+Download the data file from [[this link](https://figshare.com/s/35340aa23920ba25c5a8)], unzip the data and move it into the cloned directory. 
 
-3. **Navigate to the cloned repository:**
-
-   ```bash
-   cd your-repo-name
-
-4. **Install the required Python packages or install the provided environment YAML:**
-  
-    ```bash
-    pip install -r requirements.txt
 
 ## Usage
 Reproducing the Main Figures
