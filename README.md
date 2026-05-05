@@ -54,7 +54,7 @@ If you prefer a standard Python virtual environment:
    ```
 ---
 
-2. **Download the data files:**
+3. **Download the data files:**
 
 Download the data file from [[this link](https://figshare.com/s/35340aa23920ba25c5a8)], unzip the data and move it into the cloned directory. 
 
