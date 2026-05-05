@@ -26,7 +26,74 @@ Ensure you have the following software installed:
 1. **Clone this repository:**
 
    ```bash
-   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/EmmettJT/procedural_replay_paper_2024.git)
+   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/StephensonJonesLab/Thompson_et_al_2026.git)
+
+
+
+# Setup
+
+This project provides two ways to install dependencies:
+
+- **Conda environment (`environment.yaml`)** — recommended  
+- **pip (`requirements.txt`)** — lightweight alternative  
+
+---
+
+## Option 1: Using Conda (recommended)
+
+If you use Anaconda or Miniconda:
+
+### Create the environment
+conda env create -f environment.yaml
+
+### Activate it
+conda activate myenv
+
+The environment name (`myenv`) is defined inside `environment.yaml`.
+
+---
+
+## Option 2: Using pip
+
+If you prefer a standard Python virtual environment:
+
+### Create a virtual environment
+python -m venv venv
+
+### Activate it
+
+macOS / Linux:
+source venv/bin/activate
+
+Windows:
+venv\Scripts\activate
+
+### Install dependencies
+pip install -r requirements.txt
+
+---
+
+## Updating dependencies
+
+If you add new packages:
+
+### Conda
+conda env export --no-builds > environment.yaml
+
+### pip
+pip freeze > requirements.txt
+
+---
+
+## Notes
+
+- The Conda environment is the most reliable way to reproduce results exactly.  
+- The pip setup may be faster but can be less consistent across systems.  
+- If something breaks, try recreating the environment from scratch.
+
+
+
+
 
 2. **Download the data file:**
 
