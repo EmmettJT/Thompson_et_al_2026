@@ -21,13 +21,13 @@ Ensure you have the following software installed:
 - [Python](https://www.python.org/downloads/)  (Version used: 3.10.18)
 - Necessary Python libraries: see environment YAML 
 
-### Installation
+## Installation
 
 1. **Clone this repository:**
 
    ```bash
    git clone https://github.com/StephensonJonesLab/Thompson_et_al_2026.git
-
+   ```  
 2. **Dependencies:**
 
 This project provides two ways to install dependencies:
@@ -36,25 +36,26 @@ This project provides two ways to install dependencies:
 - **pip (`requirements.txt`)** — lightweight alternative  
 
 ---
-## Option 1: Using Conda
-### Create the environment
-conda env create -f Thompson_et_al_2026.yaml
+#### Option 1: Using Conda
+##### Create the environment
 
-### Activate it
-conda activate Thompson_et_al_2026
+   ```bash
+   conda env create -f Thompson_et_al_2026.yaml
+   ```  
+#### Activate it
+
+   ```bash
+   conda activate Thompson_et_al_2026
+   ```  
 ---
 
-## Option 2: Using pip
+#### Option 2: Using pip
 If you prefer a standard Python virtual environment:
-pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-
-
-
-
-
-
-2. **Download the data file:**
+2. **Download the data files:**
 
 Download the data file from [[this link](https://figshare.com/s/35340aa23920ba25c5a8)], unzip the data and move it to the same parent directory as the cloned folder (do not place the data file inside the cloned repo).
 
