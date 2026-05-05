@@ -1,4 +1,4 @@
-name: proc_replay_2025
+name: Thompson_et_al_2026
 channels:
   - conda-forge
   - defaults
