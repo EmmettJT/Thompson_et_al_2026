@@ -143,50 +143,51 @@ def plot_canonical_variates(X_c, Y_c,num_variates):
             if i > 0:
                 break
 
-def plot_weights_delta(X_scaled,Y_scaled,component):
+def stb_cca_weights(stb_X_scaled, stb_Y_scaled):
     cca = CCA(4)
-    X_c, Y_c = cca.fit_transform(X_scaled, Y_scaled)
+    X_c, Y_c = cca.fit_transform(stb_X_scaled, stb_Y_scaled)
     x_weights = cca.x_weights_[:, 0]
     y_weights = cca.y_weights_[:, 0]
     # Bootstrap ---
-    n_boots = 1000
-    x_weights_all = np.zeros((n_boots, X_scaled.shape[1]))
-    y_weights_all = np.zeros((n_boots, Y_scaled.shape[1]))    
+    iters = 1000
+    x_weights_all = np.zeros((iters, stb_X_scaled.shape[1]))
+    y_weights_all = np.zeros((iters, stb_Y_scaled.shape[1]))    
     np.random.seed(5)
-    for i in range(n_boots):
-        idx = np.random.choice(len(X_scaled), size=len(X_scaled), replace=True)
-        X_boot = X_scaled[idx]
-        Y_boot = Y_scaled[idx]
+    for i in range(iters):
+        idx = np.random.choice(len(stb_X_scaled), size=len(stb_X_scaled), replace=True)
+        X_boot = stb_X_scaled[idx]
+        Y_boot = stb_Y_scaled[idx]
         cca.fit(X_boot, Y_boot)
         x_weights_all[i] = cca.x_weights_[:, 0]
         y_weights_all[i] = cca.y_weights_[:, 0]
 
-    # Compute confidence intervals ---
-    x_mean = x_weights_all.mean(axis=0)
-    y_mean = y_weights_all.mean(axis=0)
-    y_err = scipy.stats.sem(x_weights_all, axis=0)
-    x_err = scipy.stats.sem(y_weights_all, axis=0)
+    x_weight = x_weights_all.mean(axis=0)
+    y_weight = y_weights_all.mean(axis=0)
+    
+    return x_weight, y_weight
+
+def plot_weights_delta(stb_X_scaled,stb_Y_scaled,boot1,boot2):
+    x_W, y_W = stb_cca_weights(stb_X_scaled,stb_Y_scaled)
+
     # Sort by absolute weight magnitude
-    sorted_idx_x = np.argsort(x_mean)
-    sorted_idx_y = np.argsort(y_mean)
-    # Behaviour
-    beh_names = np.array(['delta Movement variability','delta Movement speed', 'delta Total expression','delta Proportion linked to reward','delta Error rate'])[sorted_idx_y]
-    beh_vals = y_mean[sorted_idx_y]
-    # Replay
-    rep_names = np.array(['Event rate', 'Event length','Mean warp', 'forward/reverse proportion','Neuron Awake consistency','Expression difference to expected'])[sorted_idx_x]
-    rep_vals = x_mean[sorted_idx_x]
+    sorted_idx_x = np.argsort(x_W)
+    sorted_idx_y = np.argsort(y_W)[::-1]
 
-    # Plot
-    fig, axes = plt.subplots(1, 1, figsize=(5, 3))
-    axes.barh(rep_names, rep_vals, xerr=y_err, color='#DD6F54', alpha=0.8)
-    axes.set_title('Canonical Weights – Replay')
-    axes.axvline(0, color='black', linewidth=0.8)
-    fig, axes = plt.subplots(1, 1, figsize=(5, 3))
-    axes.barh(beh_names, beh_vals, xerr= x_err, color='#1F668C', alpha=0.8)
-    axes.set_title('Canonical Weights – Behaviour')
-    axes.axvline(0, color='black', linewidth=0.8)
-    plt.gca().invert_yaxis()
+    # replay
+    rep_names= np.array(['Event rate', 'Event length','Mean warp', 'forward/reverse proportion','Neuron Awake consistency','Expression difference to expected'])[sorted_idx_x]
+    rep_vals = x_W[sorted_idx_x]
+    plot_weight_bootstrap(rep_vals, boot1,rep_names,'#DD6F54')
+    
+    plt.savefig(r'D:\1.pdf')
 
+    # behav
+    rep_names= np.array(['delta Movement variability','delta Movement speed', 'delta Total expression','delta Proportion linked to reward','delta Error rate'])[sorted_idx_y]
+    rep_vals = y_W[sorted_idx_y]
+
+    reversed_arr = [sub[::-1] for sub in boot2]
+    plot_weight_bootstrap(rep_vals, reversed_arr,rep_names,'#1F668C')
+    
+    plt.savefig(r'D:\2.pdf')
 
 def stadardise_data(X, Y):
     """
@@ -261,65 +262,90 @@ def return_correlation_bootstrapped(X_scaled,Y_scaled):
         print(f"Component {k+1}: corr={orig_corrs[k]:.3f}, 95% CI=({ci_lower[k]:.3f}, {ci_upper[k]:.3f})")
         
 
-def cca_bootstrap_ci(X_scaled,Y_scaled,component):
-    # --- Step 2: Fit CCA on full data ---
+def cca_weights(X_scaled,Y_scaled,component):
+
     cca = CCA(2)
     X_c, Y_c = cca.fit_transform(X_scaled, Y_scaled)
 
-    x_weights = cca.x_weights_[:, component]
-    y_weights = cca.y_weights_[:, component]
+    iters = 1000
+    x_weights_all = np.zeros((iters,np.shape(X_scaled)[1]))
+    y_weights_all = np.zeros((iters,np.shape(Y_scaled)[1]))
 
-    # --- Step 3: Bootstrap ---
-    n_boots = 1000
-    x_weights_all = np.zeros((n_boots,np.shape(X_scaled)[1]))
-    y_weights_all = np.zeros((n_boots,np.shape(Y_scaled)[1]))
-
-    for i in range(n_boots):
+    for i in range(iters):
         idx = np.random.choice(len(X_scaled), size=len(X_scaled), replace=True)
-        X_boot = X_scaled[idx]
-        Y_boot = Y_scaled[idx]
+        X_b = X_scaled[idx]
+        Y_b = Y_scaled[idx]
         
-        cca.fit(X_boot, Y_boot)
+        cca.fit(X_b, Y_b)
         x_weights_all[i] = cca.x_weights_[:, component]
         y_weights_all[i] = cca.y_weights_[:, component]
-
-    # --- Step 4: Compute confidence intervals ---
-    x_mean = x_weights_all.mean(axis=0)
-    y_mean = y_weights_all.mean(axis=0)
-    x_err = scipy.stats.sem(x_weights_all, axis=0)
-    y_err = scipy.stats.sem(y_weights_all, axis=0)
+        
+    x_weight = x_weights_all.mean(axis=0)
+    y_weight = y_weights_all.mean(axis=0)
     
-    return x_mean,y_mean,x_err,y_err
+    return x_weight,y_weight
 
+def plot_weights(X_scaled,Y_scaled,boot_1,boot_2,component):
 
-def plot_weights(X_scaled,Y_scaled,component):
-
-    # get bootstrapped confidence intervals + mean weights
-    x_mean,y_mean,x_err,y_err = cca_bootstrap_ci(X_scaled,Y_scaled,component)
+    # get weight
+    x_W,y_W= cca_weights(X_scaled,Y_scaled,component)
 
     # Sort by absolute weight magnitude
-    sorted_idx_x = np.argsort(x_mean)
-    sorted_idx_y = np.argsort(y_mean)
+    sorted_idx_x = np.argsort(x_W)
+    sorted_idx_y = np.argsort(y_W)
 
     # Behaviour
     beh_names= np.array(['Movement variability','Movement speed', 'Total expression','Proportion linked to reward','Error rate'])[sorted_idx_x]
-    beh_vals = x_mean[sorted_idx_x]
+    beh_vals = x_W[sorted_idx_x]
+    plot_weight_bootstrap(beh_vals, boot_1,beh_names,"#1F668C")
 
     # Replay
     rep_names = np.array(['Event rate', 'Event length','Mean warp', 'forward/reverse proportion','Neuron Awake consistency','Expression difference to expected'])[sorted_idx_y]
-    rep_vals = y_mean[sorted_idx_y]
+    rep_vals = y_W[sorted_idx_y]
+    plot_weight_bootstrap(rep_vals, boot_2,rep_names,"#DD6F54")
 
-    # Plot
+
+
+def plot_weight_bootstrap(beh_vals, boot_1,beh_names,color_):
     fig, axes = plt.subplots(1, 1, figsize=(5, 3))
 
-    axes.barh(beh_names, beh_vals, xerr= x_err, color="#1F668C", alpha=0.8)
-    axes.set_title('Canonical Weights – Behaviour')
-    axes.axvline(0, color='black', linewidth=0.8)
+    #weights
+    for y, weight, c in zip(np.linspace(0,len(beh_vals),len(beh_vals)+1), beh_vals, [color_] * len(beh_vals)):
+        axes.scatter(
+            weight,
+            y,
+            color=c,
+            s=120,
+            edgecolor='none',
+            linewidth=1.2,
+            zorder=10
+        )
+        
+    # bootstrapped data
+    boot1 = list(map(list, zip(*boot_1)))
+    for y, data in zip(np.linspace(0,len(beh_vals),len(beh_vals)+1)[::-1],boot1):
 
-    fig, axes = plt.subplots(1, 1, figsize=(5, 3))
-    axes.barh(rep_names, rep_vals, xerr=y_err, color="#DD6F54", alpha=0.8)
-    axes.set_title('Canonical Weights – Replay')
-    axes.axvline(0, color='black', linewidth=0.8)
+        # variable vertical jitter
+        jitter = np.random.normal(
+            0,
+            np.random.uniform(0.02, 0.06),
+            size=len(data)
+        )
+        axes.scatter(
+            data,                              # x-values
+            np.full(len(data), y-1) + jitter,   # y-values with jitter
+            color='lightgrey',
+            s=8,
+            alpha=0.35,
+            edgecolors='none'
+        )
+    # optional formatting
+    axes.set_yticks(range(len(beh_names)))
+    axes.set_yticklabels(beh_names)
+    axes.axvline(0, color = 'k')
+    
+
+
 
 def cca_scree_absolute_with_null(X_scaled, Y_scaled, rand_,n_components=5, n_shuffles=500):
     if rand_ is not None:
