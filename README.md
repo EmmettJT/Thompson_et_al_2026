@@ -56,9 +56,10 @@ If you prefer a standard Python virtual environment:
 
 3. **Download the data files:**
 
-Download the data file from ZENODO LINK, unzip the data and move it into the cloned directory. 
-This file must be called 'data' and must live inside the main repo file
+Download the data file from [Zenodo](https://zenodo.org/records/20055819). DOI: https://doi.org/10.5281/zenodo.20055819
 
+- Unzip the data and move it into the cloned directory. 
+- IMPORTANT: This file must be named 'data' and must be placed inside the main parent repo file directory. 
 
 ## Usage
 Reproducing the Main Figures
